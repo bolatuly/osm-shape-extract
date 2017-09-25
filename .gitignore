@@ -1,0 +1,8 @@
+# ignore files
+data/
+
+# ignore cache
+preprocessing/algorithm/__pycache__/
+
+# ignore IDEA files
+.idea/
