@@ -57,7 +57,7 @@ class Polygon(object):
             if coordinates[i][1] < min_y:
                 min_y = coordinates[i][1]
             if coordinates[i][1] > max_y:
-                max_y = coordinates[i][0]
+                max_y = coordinates[i][1]
 
         for i in range(len(coordinates)):
             temp = list(coordinates[i])
