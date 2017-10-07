@@ -61,7 +61,7 @@ if __name__ == '__main__':
     labels = df["type"].values
     features = df[list(columns)].values
 
-    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=.2)
+    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=.01)
 
     # my_classifier = tree.DecisionTreeClassifier()
     # my_classifier = KNeighborsClassifier()

@@ -1,6 +1,7 @@
 import math
 
 from preprocessing.algorithm.shape import Shape
+from preprocessing.algorithm.mbr import MBR
 
 
 class Polygon(object):
@@ -42,30 +43,52 @@ class Polygon(object):
 
     @classmethod
     def translate_and_scale(cls, polygon):
-        max_x = -180
-        max_y = -180
-        min_x = 180
-        min_y = 180
 
         coordinates = list(polygon.exterior.coords)
+        mbr = MBR()
+        mbr.calc(coordinates)
 
-        for i in range(len(coordinates)-1):
-            if coordinates[i][0] < min_x:
-                min_x = coordinates[i][0]
-            if coordinates[i][0] > max_x:
-                max_x = coordinates[i][0]
-            if coordinates[i][1] < min_y:
-                min_y = coordinates[i][1]
-            if coordinates[i][1] > max_y:
-                max_y = coordinates[i][1]
+        east = math.radians(mbr.east)
+        west = math.radians(mbr.west)
+        north = math.radians(mbr.north)
+        south = math.radians(mbr.south)
+
+        coordinates = cls.degree_to_rad(coordinates)
+
+        height = 1000.0
+        width = 1000.0 * (east - west) / (north - south)
+
+        y_min = cls.merc_y(south)
+        y_max = cls.merc_y(north)
+        x_factor = width / (east - west)
+        y_factor = height / (y_max - y_min)
 
         for i in range(len(coordinates)):
+            x = (coordinates[i][0] - west) * x_factor
+            y = cls.merc_y(coordinates[i][1])
+            y = (y_max - y) * y_factor
+
             temp = list(coordinates[i])
-            temp[0] -= math.floor(min_x)
-            temp[1] -= math.floor(min_y)
+            temp[0] = x
+            temp[1] = y
             coordinates[i] = tuple(temp)
 
         return tuple(coordinates)
+
+    @classmethod
+    def merc_y(cls, lat):
+        half_lat = lat/2
+        tangent = math.tan(half_lat + math.pi/4)
+        return math.log(tangent)
+
+    @classmethod
+    def degree_to_rad(cls, coordinates):
+        for i in range(len(coordinates)):
+            temp = list(coordinates[i])
+            temp[0] = math.radians(temp[0])
+            temp[1] = math.radians(temp[1])
+            coordinates[i] = tuple(temp)
+        return coordinates
 
     @classmethod
     def set_ig(cls, coordinates):
@@ -103,7 +126,7 @@ class Polygon(object):
     def set_area(cls, coordinates):
         area = 0.0
         for i in range(len(coordinates)-1):
-            area +=  cls.triangles_list[i].area + cls.rectangles_list[i].area
+            area += cls.triangles_list[i].area + cls.rectangles_list[i].area
         cls.area = area
 
     @classmethod

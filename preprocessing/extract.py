@@ -19,17 +19,19 @@ class BuildingHandler(osmium.SimpleHandler):
 
     def area(self, a):
         if 'building' in a.tags:
-            try:
-                wkb = wkbfab.create_multipolygon(a)
-                poly = wkblib.loads(wkb, hex=True)
-                polygon_type = Polygon
-                for polygon in poly:
-                    mon = polygon_type.compute(polygon=polygon)
-                self.buildings.append([a.tags['building'],a.id, mon, polygon.area, polygon.length,len(polygon.exterior.coords)])
-                self.counter +=1;
-                self.print_counter()
-            except:
-                self.exception_counter += 1;
+                try:
+                    wkb = wkbfab.create_multipolygon(a)
+                    poly = wkblib.loads(wkb, hex=True)
+                    polygon_type = Polygon
+                    for polygon in poly:
+                        mon = polygon_type.compute(polygon=polygon)
+                    self.buildings.append(
+                        [a.tags['building'], a.id, mon, polygon.area, polygon.length, len(polygon.exterior.coords)])
+                    self.counter += 1
+                    self.print_counter()
+                except:
+                    self.exception_counter += 1;
+
 
 if __name__ == '__main__':
     h = BuildingHandler()
