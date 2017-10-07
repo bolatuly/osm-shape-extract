@@ -5,6 +5,8 @@ from sklearn import tree
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 from scipy.spatial import distance
+from processing.scaling import min_max_scaler
+from processing.scaling import scale
 
 class OwnKNN():
     def fit(self, X_train, y_train):
@@ -65,6 +67,13 @@ if __name__ == '__main__':
 
     # my_classifier = tree.DecisionTreeClassifier()
     # my_classifier = KNeighborsClassifier()
+
+
+    #scaling
+
+    X_train = min_max_scaler(X_train)
+    X_test = min_max_scaler(X_test)
+
     my_classifier = OwnKNN()
     my_classifier.fit(X_train, y_train)
 
