@@ -1,5 +1,5 @@
 # ignore files
-data/
+data/south-korea-latest.osm.pbf
 
 # ignore cache
 preprocessing/algorithm/__pycache__/
