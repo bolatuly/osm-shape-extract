@@ -16,7 +16,7 @@ class BuildingHandler(osmium.SimpleHandler):
 
     def area(self, a):
         if 'building' in a.tags:
-            if a.tags['building'] == 'house':
+            if a.tags['building'] == 'apartments':
                 try:
                     wkb = wkbfab.create_multipolygon(a)
                     poly = wkblib.loads(wkb, hex=True)
@@ -32,5 +32,5 @@ if __name__ == '__main__':
     feature_collection = FeatureCollection(h.buildings)
     print("Objects with broken geometry: " + str(h.exception_counter))
     import json
-    with open('../data/result/south_korea_houses_geojson.json', 'w') as f:
+    with open('../data/result/south_korea_apartments_geojson.json', 'w') as f:
         json.dump(feature_collection, f, ensure_ascii=False)

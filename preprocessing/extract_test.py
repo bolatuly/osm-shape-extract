@@ -19,7 +19,7 @@ class BuildingHandler(osmium.SimpleHandler):
 
     def area(self, a):
         if 'building' in a.tags:
-            if a.tags['building'] == 'house':
+            if a.tags['building'] == 'apartments':
                 try:
                     wkb = wkbfab.create_multipolygon(a)
                     poly = wkblib.loads(wkb, hex=True)
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     h.apply_file("../data/south-korea-latest.osm.pbf")
     colnames = ['id', 'compactness', 'area', 'length', 'n_nodes']
     elements = pd.DataFrame(h.buildings, columns=colnames)
-    elements.to_csv("../data/south_korea_houses.csv", date_format='%Y-%m-%d %H:%M:%S')
+    elements.to_csv("../data/south_korea_apartments.csv", date_format='%Y-%m-%d %H:%M:%S')
     print(elements.head(10))
     print("Total objects: " + str(h.counter))
     print("Objects with broken geometry: " + str(h.exception_counter))
