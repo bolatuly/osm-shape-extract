@@ -1,0 +1,8 @@
+{ "extracts": [ {
+              "output": "south_korea.osh.pbf",
+              "output_format": "osh.pbf",
+              "description": "South Korea OSM history",
+              "bbox": {"left": 125.914, "right": 129.589, "top": 38.643, "bottom": 33.170} } ],
+              "directory": "/path/"
+}
+
